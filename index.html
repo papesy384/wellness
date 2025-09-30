@@ -3719,6 +3719,7 @@
                         <div class="profile-info">
                             <h3 id="profileUserName">User Name</h3>
                             <p id="profileUserEmail">user@example.com</p>
+                            <p id="profileUserPhone">+1 (555) 123-4567</p>
                         </div>
                         <button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
                     </div>
@@ -3769,6 +3770,10 @@
                                 <input type="email" id="profileEmailAddress" placeholder="your@email.com" value="user@example.com">
                             </div>
                             <div class="setting-item">
+                                <span class="setting-label">Phone Number (Optional)</span>
+                                <input type="tel" id="profilePhoneNumber" placeholder="+1 (555) 123-4567" value="+1 (555) 123-4567">
+                            </div>
+                            <div class="setting-item">
                                 <span class="setting-label">Daily Recommendations</span>
                                 <label class="toggle-switch">
                                     <input type="checkbox" id="emailDailyRecs" checked>
@@ -3793,6 +3798,20 @@
                                 <span class="setting-label">Reminder Emails</span>
                                 <label class="toggle-switch">
                                     <input type="checkbox" id="emailReminders" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-label">SMS Notifications</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="smsNotifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-label">SMS Daily Reminders</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="smsDailyReminders" checked>
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
@@ -3848,6 +3867,7 @@
                     
                     <div class="email-tabs">
                         <button class="email-tab-btn active" onclick="showEmailTab('compose')">Compose</button>
+                        <button class="email-tab-btn" onclick="showEmailTab('sms')">SMS</button>
                         <button class="email-tab-btn" onclick="showEmailTab('templates')">Templates</button>
                         <button class="email-tab-btn" onclick="showEmailTab('history')">History</button>
                         <button class="email-tab-btn" onclick="showEmailTab('settings')">Settings</button>
@@ -3892,6 +3912,97 @@
                                 <div class="email-actions">
                                     <button class="btn btn-secondary" onclick="previewEmail()">Preview</button>
                                     <button class="btn btn-primary" onclick="sendEmail()">Send Email</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SMS Tab -->
+                    <div class="email-tab" id="smsTab">
+                        <div class="sms-compose">
+                            <div class="sms-form">
+                                <div class="form-group">
+                                    <label for="smsTo">To:</label>
+                                    <input type="tel" id="smsTo" placeholder="+1 (555) 123-4567" value="+1 (555) 123-4567">
+                                </div>
+                                <div class="form-group">
+                                    <label for="smsTemplate">Template:</label>
+                                    <select id="smsTemplate" onchange="loadSMSTemplate()">
+                                        <option value="">Select Template</option>
+                                        <option value="daily-reminder">Daily Reminder</option>
+                                        <option value="quick-tip">Quick Wellness Tip</option>
+                                        <option value="achievement">Achievement Alert</option>
+                                        <option value="motivation">Motivational Message</option>
+                                        <option value="progress-check">Progress Check-in</option>
+                                        <option value="custom">Custom Message</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="smsMessage">Message:</label>
+                                    <textarea id="smsMessage" rows="4" placeholder="Enter your SMS message here..." maxlength="160"></textarea>
+                                    <div class="char-counter">
+                                        <span id="smsCharCount">0</span>/160 characters
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="smsSchedule">Schedule:</label>
+                                    <select id="smsSchedule">
+                                        <option value="now">Send Now</option>
+                                        <option value="later">Schedule for Later</option>
+                                    </select>
+                                    <input type="datetime-local" id="smsScheduleTime" style="display: none;">
+                                </div>
+                                <div class="sms-actions">
+                                    <button class="btn btn-secondary" onclick="previewSMS()">Preview</button>
+                                    <button class="btn btn-primary" onclick="sendSMS()">Send SMS</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sms-templates">
+                            <h3>📱 SMS Templates</h3>
+                            <div class="sms-template-grid">
+                                <div class="sms-template-card" onclick="selectSMSTemplate('daily-reminder')">
+                                    <h4>⏰ Daily Reminder</h4>
+                                    <p>Gentle daily wellness reminders</p>
+                                    <div class="sms-preview">
+                                        "Good morning! Time for your daily wellness check-in. How are you feeling today?"
+                                    </div>
+                                </div>
+                                <div class="sms-template-card" onclick="selectSMSTemplate('quick-tip')">
+                                    <h4>💡 Quick Tip</h4>
+                                    <p>Daily wellness tips and advice</p>
+                                    <div class="sms-preview">
+                                        "Tip: Take 5 deep breaths to reduce stress. Your wellness journey continues!"
+                                    </div>
+                                </div>
+                                <div class="sms-template-card" onclick="selectSMSTemplate('achievement')">
+                                    <h4>🏆 Achievement</h4>
+                                    <p>Celebrate wellness milestones</p>
+                                    <div class="sms-preview">
+                                        "🎉 Congratulations! You've reached a new wellness milestone. Keep it up!"
+                                    </div>
+                                </div>
+                                <div class="sms-template-card" onclick="selectSMSTemplate('motivation')">
+                                    <h4>💪 Motivation</h4>
+                                    <p>Encouraging motivational messages</p>
+                                    <div class="sms-preview">
+                                        "You're doing great! Every small step counts towards your wellness goals."
+                                    </div>
+                                </div>
+                                <div class="sms-template-card" onclick="selectSMSTemplate('progress-check')">
+                                    <h4>📊 Progress Check</h4>
+                                    <p>Quick progress check-ins</p>
+                                    <div class="sms-preview">
+                                        "Quick check: How many steps have you taken today? Every step matters!"
+                                    </div>
+                                </div>
+                                <div class="sms-template-card" onclick="selectSMSTemplate('custom')">
+                                    <h4>✏️ Custom</h4>
+                                    <p>Create your own message</p>
+                                    <div class="sms-preview">
+                                        "Your personalized wellness message here..."
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -3960,7 +4071,9 @@
                             <h3>📬 Email History</h3>
                             <div class="history-controls">
                                 <select id="emailHistoryFilter">
-                                    <option value="all">All Emails</option>
+                                    <option value="all">All Messages</option>
+                                    <option value="email">Emails Only</option>
+                                    <option value="sms">SMS Only</option>
                                     <option value="sent">Sent</option>
                                     <option value="scheduled">Scheduled</option>
                                     <option value="failed">Failed</option>
@@ -4045,6 +4158,20 @@
                                         <span>Send reminder emails</span>
                                         <label class="toggle-switch">
                                             <input type="checkbox" id="notifyReminders" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="preference-item">
+                                        <span>Send SMS notifications</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="notifySMS" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="preference-item">
+                                        <span>Send SMS daily reminders</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="notifySMSDaily" checked>
                                             <span class="toggle-slider"></span>
                                         </label>
                                     </div>
