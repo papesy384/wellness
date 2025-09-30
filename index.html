@@ -2434,6 +2434,132 @@
             margin-top: 30px;
         }
 
+        /* SMS Styles */
+        .sms-compose {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .sms-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sms-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sms-form label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .sms-form input,
+        .sms-form select,
+        .sms-form textarea {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .sms-form input:focus,
+        .sms-form select:focus,
+        .sms-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .sms-form textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .char-counter.warning {
+            color: #FF9800;
+        }
+
+        .char-counter.error {
+            color: #f44336;
+        }
+
+        .sms-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .sms-templates {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .sms-templates h3 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .sms-template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .sms-template-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .sms-template-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .sms-template-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .sms-template-card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .sms-preview {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.9rem;
+            color: #333;
+            font-style: italic;
+            border-left: 4px solid #667eea;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -4548,6 +4674,13 @@
             frequency: 'daily',
             sendTime: '08:00'
         };
+        let smsHistory = [];
+        let smsSettings = {
+            phoneNumber: '+1 (555) 123-4567',
+            smsNotifications: true,
+            smsDailyReminders: true,
+            smsSendTime: '09:00'
+        };
 
         // Onboarding Functions
         function showOnboarding() {
@@ -5495,6 +5628,18 @@ and wellness profile to provide you with more options.</pre>
                 emailSettings = JSON.parse(savedEmailSettings);
             }
 
+            // Load SMS history
+            const savedSMSHistory = localStorage.getItem('wellnessSMSHistory');
+            if (savedSMSHistory) {
+                smsHistory = JSON.parse(savedSMSHistory);
+            }
+
+            // Load SMS settings
+            const savedSMSSettings = localStorage.getItem('wellnessSMSSettings');
+            if (savedSMSSettings) {
+                smsSettings = JSON.parse(savedSMSSettings);
+            }
+
             // Add fitness slider event listener
             const fitnessSlider = document.getElementById('fitnessLevel');
             if (fitnessSlider) {
@@ -5503,6 +5648,12 @@ and wellness profile to provide you with more options.</pre>
 
             // Set up email notification checking
             setInterval(checkAndSendNotifications, 60000); // Check every minute
+
+            // Add SMS character counter event listener
+            const smsMessage = document.getElementById('smsMessage');
+            if (smsMessage) {
+                smsMessage.addEventListener('input', updateSMSCharCount);
+            }
         }
 
         // Screen Navigation Functions
@@ -6094,24 +6245,44 @@ or AWS SES for email delivery.</pre>
         function updateEmailHistory() {
             const emailList = document.getElementById('emailList');
             
-            if (emailHistory.length === 0) {
-                emailList.innerHTML = '<p>No emails sent yet. Start by composing your first email!</p>';
+            // Combine email and SMS history
+            const allMessages = [...emailHistory, ...smsHistory].sort((a, b) => new Date(b.sentAt) - new Date(a.sentAt));
+            
+            if (allMessages.length === 0) {
+                emailList.innerHTML = '<p>No messages sent yet. Start by composing your first email or SMS!</p>';
                 return;
             }
 
-            const recentEmails = emailHistory.slice(-10).reverse();
-            emailList.innerHTML = recentEmails.map(email => `
-                <div class="email-item">
-                    <div class="email-header-info">
-                        <span class="email-subject">${email.subject}</span>
-                        <span class="email-status ${email.status}">${email.status}</span>
-                    </div>
-                    <div class="email-details">
-                        <span class="email-to">${email.to}</span>
-                        <span class="email-date">${new Date(email.sentAt).toLocaleString()}</span>
-                    </div>
-                </div>
-            `).join('');
+            const recentMessages = allMessages.slice(0, 10);
+            emailList.innerHTML = recentMessages.map(message => {
+                if (message.type === 'sms') {
+                    return `
+                        <div class="email-item">
+                            <div class="email-header-info">
+                                <span class="email-subject">📱 SMS: ${message.message.substring(0, 50)}${message.message.length > 50 ? '...' : ''}</span>
+                                <span class="email-status ${message.status}">${message.status}</span>
+                            </div>
+                            <div class="email-details">
+                                <span class="email-to">${message.to}</span>
+                                <span class="email-date">${new Date(message.sentAt).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="email-item">
+                            <div class="email-header-info">
+                                <span class="email-subject">📧 ${message.subject}</span>
+                                <span class="email-status ${message.status}">${message.status}</span>
+                            </div>
+                            <div class="email-details">
+                                <span class="email-to">${message.to}</span>
+                                <span class="email-date">${new Date(message.sentAt).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
         }
 
         function refreshEmailHistory() {
@@ -6125,6 +6296,12 @@ or AWS SES for email delivery.</pre>
                 emailSettings = JSON.parse(savedSettings);
             }
 
+            // Load saved SMS settings
+            const savedSMSSettings = localStorage.getItem('wellnessSMSSettings');
+            if (savedSMSSettings) {
+                smsSettings = JSON.parse(savedSMSSettings);
+            }
+
             // Update form fields
             document.getElementById('smtpHost').value = emailSettings.smtpHost;
             document.getElementById('smtpPort').value = emailSettings.smtpPort;
@@ -6135,6 +6312,11 @@ or AWS SES for email delivery.</pre>
             document.getElementById('notifyAchievements').checked = emailSettings.achievements;
             document.getElementById('notifyReminders').checked = emailSettings.reminders;
             document.getElementById('defaultSendTime').value = emailSettings.sendTime;
+
+            // Update SMS form fields
+            document.getElementById('profilePhoneNumber').value = smsSettings.phoneNumber;
+            document.getElementById('smsNotifications').checked = smsSettings.smsNotifications;
+            document.getElementById('smsDailyReminders').checked = smsSettings.smsDailyReminders;
         }
 
         function saveEmailSettings() {
@@ -6149,10 +6331,16 @@ or AWS SES for email delivery.</pre>
             emailSettings.reminders = document.getElementById('notifyReminders').checked;
             emailSettings.sendTime = document.getElementById('defaultSendTime').value;
 
+            // Save SMS settings
+            smsSettings.phoneNumber = document.getElementById('profilePhoneNumber').value;
+            smsSettings.smsNotifications = document.getElementById('smsNotifications').checked;
+            smsSettings.smsDailyReminders = document.getElementById('smsDailyReminders').checked;
+
             // Save to localStorage
             localStorage.setItem('wellnessEmailSettings', JSON.stringify(emailSettings));
+            localStorage.setItem('wellnessSMSSettings', JSON.stringify(smsSettings));
 
-            alert('Email settings saved successfully!');
+            alert('Email and SMS settings saved successfully!');
         }
 
         function testSMTPConnection() {
@@ -6301,6 +6489,177 @@ Your Wellness Assistant`,
 
             emailHistory.push(dailyEmail);
             localStorage.setItem('wellnessEmailHistory', JSON.stringify(emailHistory));
+        }
+
+        // SMS Functions
+        function loadSMSTemplate() {
+            const template = document.getElementById('smsTemplate').value;
+            const templates = {
+                'daily-reminder': {
+                    message: `Good morning ${userProfile.firstName || 'there'}! Time for your daily wellness check-in. How are you feeling today?`
+                },
+                'quick-tip': {
+                    message: `Tip: Take 5 deep breaths to reduce stress. Your wellness journey continues!`
+                },
+                'achievement': {
+                    message: `🎉 Congratulations ${userProfile.firstName || 'there'}! You've reached a new wellness milestone. Keep it up!`
+                },
+                'motivation': {
+                    message: `You're doing great ${userProfile.firstName || 'there'}! Every small step counts towards your wellness goals.`
+                },
+                'progress-check': {
+                    message: `Quick check: How many steps have you taken today? Every step matters!`
+                },
+                'custom': {
+                    message: `Your personalized wellness message here...`
+                }
+            };
+
+            if (templates[template]) {
+                document.getElementById('smsMessage').value = templates[template].message;
+                updateSMSCharCount();
+            }
+        }
+
+        function selectSMSTemplate(templateName) {
+            document.getElementById('smsTemplate').value = templateName;
+            loadSMSTemplate();
+        }
+
+        function updateSMSCharCount() {
+            const message = document.getElementById('smsMessage').value;
+            const charCount = message.length;
+            const charCounter = document.getElementById('smsCharCount');
+            
+            charCounter.textContent = charCount;
+            
+            if (charCount > 140) {
+                charCounter.className = 'char-counter error';
+            } else if (charCount > 120) {
+                charCounter.className = 'char-counter warning';
+            } else {
+                charCounter.className = 'char-counter';
+            }
+        }
+
+        function previewSMS() {
+            const to = document.getElementById('smsTo').value;
+            const message = document.getElementById('smsMessage').value;
+
+            if (!to || !message) {
+                alert('Please fill in all required fields before previewing.');
+                return;
+            }
+
+            const preview = `
+SMS Preview:
+================
+To: ${to}
+Message: ${message}
+Characters: ${message.length}/160
+================
+            `;
+
+            alert(preview);
+        }
+
+        function sendSMS() {
+            const to = document.getElementById('smsTo').value;
+            const message = document.getElementById('smsMessage').value;
+            const schedule = document.getElementById('smsSchedule').value;
+            const scheduleTime = document.getElementById('smsScheduleTime').value;
+
+            if (!to || !message) {
+                alert('Please fill in all required fields before sending.');
+                return;
+            }
+
+            // Validate phone number format
+            const phoneRegex = /^\+?[\d\s\-\(\)]+$/;
+            if (!phoneRegex.test(to)) {
+                alert('Please enter a valid phone number.');
+                return;
+            }
+
+            // Check message length
+            if (message.length > 160) {
+                alert('SMS message cannot exceed 160 characters.');
+                return;
+            }
+
+            // Create SMS record
+            const smsRecord = {
+                id: Date.now(),
+                to: to,
+                message: message,
+                status: schedule === 'now' ? 'sent' : 'scheduled',
+                sentAt: schedule === 'now' ? new Date().toISOString() : scheduleTime,
+                createdAt: new Date().toISOString(),
+                type: 'sms'
+            };
+
+            // Add to SMS history
+            smsHistory.push(smsRecord);
+            localStorage.setItem('wellnessSMSHistory', JSON.stringify(smsHistory));
+
+            // Simulate SMS sending
+            if (schedule === 'now') {
+                simulateSMSSending(smsRecord);
+            } else {
+                alert('SMS scheduled successfully!');
+            }
+
+            // Clear form
+            document.getElementById('smsTo').value = '';
+            document.getElementById('smsMessage').value = '';
+            document.getElementById('smsTemplate').value = '';
+            updateSMSCharCount();
+        }
+
+        function simulateSMSSending(smsRecord) {
+            // Simulate SMS delivery
+            const output = document.getElementById('demoOutput');
+            output.innerHTML = `
+                <h3>📱 SMS Sent Successfully</h3>
+                <pre>📬 SMS Delivery Status
+====================================
+📱 To: ${smsRecord.to}
+📝 Message: ${smsRecord.message}
+📅 Sent: ${new Date(smsRecord.sentAt).toLocaleString()}
+📊 Status: Delivered
+
+📈 Delivery Stats:
+  • Delivery Time: 1.2 seconds
+  • Carrier: Verizon Wireless
+  • Message ID: ${smsRecord.id}@wellness.app
+  • Characters: ${smsRecord.message.length}/160
+
+✅ SMS successfully delivered to recipient's phone!
+
+Note: This is a simulation. In a real application, you would
+integrate with SMS services like Twilio, AWS SNS, or similar
+SMS gateway providers for actual message delivery.</pre>
+            `;
+
+            alert('SMS sent successfully!');
+        }
+
+        function sendDailySMSReminder() {
+            const phoneNumber = document.getElementById('profilePhoneNumber').value;
+            if (!phoneNumber || !smsSettings.smsDailyReminders) return;
+
+            const dailySMS = {
+                id: Date.now(),
+                to: phoneNumber,
+                message: `Good morning ${userProfile.firstName || 'there'}! Time for your daily wellness check-in. How are you feeling today?`,
+                status: 'sent',
+                sentAt: new Date().toISOString(),
+                createdAt: new Date().toISOString(),
+                type: 'sms'
+            };
+
+            smsHistory.push(dailySMS);
+            localStorage.setItem('wellnessSMSHistory', JSON.stringify(smsHistory));
         }
 
         function updateDeviceStatus() {
