@@ -2054,6 +2054,386 @@
             color: #666;
         }
 
+        /* Email Notification Styles */
+        .email-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #667eea;
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .email-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Email Modal Styles */
+        .email-notification-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .email-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .email-header h2 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .email-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .email-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .email-tab-btn {
+            background: none;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .email-tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .email-tab-btn:hover {
+            color: #667eea;
+        }
+
+        .email-tab {
+            display: none;
+        }
+
+        .email-tab.active {
+            display: block;
+        }
+
+        /* Email Compose Styles */
+        .email-compose {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .email-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .email-form label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .email-form input,
+        .email-form select,
+        .email-form textarea {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .email-form input:focus,
+        .email-form select:focus,
+        .email-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .email-form textarea {
+            resize: vertical;
+            min-height: 200px;
+        }
+
+        .email-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Email Templates Styles */
+        .email-templates {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .email-templates h3 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .template-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .template-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .template-card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .template-preview {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        /* Email History Styles */
+        .email-history {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .email-history h3 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .email-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .email-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .email-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .email-subject {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .email-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .email-status.sent {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .email-status.scheduled {
+            background: #FF9800;
+            color: white;
+        }
+
+        .email-status.failed {
+            background: #f44336;
+            color: white;
+        }
+
+        .email-details {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Email Settings Styles */
+        .email-settings {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .email-settings h3 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .setting-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .setting-card h4 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .setting-card .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .setting-card label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .setting-card input,
+        .setting-card select {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .setting-card input:focus,
+        .setting-card select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .preference-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .preference-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -4028,6 +4408,19 @@
         let connectedDevices = {};
         let recommendationHistory = [];
         let currentRecommendation = null;
+        let emailHistory = [];
+        let emailSettings = {
+            smtpHost: 'smtp.gmail.com',
+            smtpPort: 587,
+            smtpUser: '',
+            smtpPass: '',
+            dailyRecs: true,
+            progress: true,
+            achievements: true,
+            reminders: true,
+            frequency: 'daily',
+            sendTime: '08:00'
+        };
 
         // Onboarding Functions
         function showOnboarding() {
@@ -4963,11 +5356,26 @@ and wellness profile to provide you with more options.</pre>
                 recommendationHistory = JSON.parse(savedRecommendations);
             }
 
+            // Load email history
+            const savedEmailHistory = localStorage.getItem('wellnessEmailHistory');
+            if (savedEmailHistory) {
+                emailHistory = JSON.parse(savedEmailHistory);
+            }
+
+            // Load email settings
+            const savedEmailSettings = localStorage.getItem('wellnessEmailSettings');
+            if (savedEmailSettings) {
+                emailSettings = JSON.parse(savedEmailSettings);
+            }
+
             // Add fitness slider event listener
             const fitnessSlider = document.getElementById('fitnessLevel');
             if (fitnessSlider) {
                 fitnessSlider.addEventListener('input', updateFitnessLevel);
             }
+
+            // Set up email notification checking
+            setInterval(checkAndSendNotifications, 60000); // Check every minute
         }
 
         // Screen Navigation Functions
@@ -5273,6 +5681,499 @@ and wellness profile to provide you with more options.</pre>
             
             // Show success message
             alert('Welcome to your wellness journey! Your profile has been set up successfully.');
+        }
+
+        // Email Notification Functions
+        function showEmailModal() {
+            document.getElementById('emailModal').style.display = 'block';
+            showEmailTab('compose');
+        }
+
+        function hideEmailModal() {
+            document.getElementById('emailModal').style.display = 'none';
+        }
+
+        function showEmailTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.email-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.email-tab-btn');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Update tab content
+            if (tabName === 'history') {
+                updateEmailHistory();
+            } else if (tabName === 'settings') {
+                loadEmailSettings();
+            }
+        }
+
+        function loadEmailTemplate() {
+            const template = document.getElementById('emailTemplate').value;
+            const templates = {
+                'daily-recommendation': {
+                    subject: 'Your Daily Wellness Action',
+                    message: `Hi ${userProfile.firstName || 'there'},
+
+I hope you're having a great day! Based on your wellness data, I have a personalized recommendation for you today.
+
+🎯 Today's Action: ${currentRecommendation ? currentRecommendation.action : 'Morning Walk'}
+📝 Description: ${currentRecommendation ? currentRecommendation.description : 'Take a 20-minute walk to boost your energy and mood'}
+⏱️ Duration: ${currentRecommendation ? currentRecommendation.duration : '20 minutes'}
+🕐 Best Time: ${currentRecommendation ? currentRecommendation.bestTime : '7:00 AM - 9:00 AM'}
+
+💡 Why this recommendation?
+${currentRecommendation ? currentRecommendation.reasoning : 'Based on your recent activity patterns, a morning walk will help regulate your circadian rhythm and provide natural energy boost.'}
+
+📈 Expected Impact: ${currentRecommendation ? currentRecommendation.expectedImpact : '+15% Energy, +10% Mood'}
+
+Remember, small consistent actions lead to big wellness improvements!
+
+Best regards,
+Your Wellness Assistant`
+                },
+                'progress-update': {
+                    subject: 'Your Wellness Progress Update',
+                    message: `Hi ${userProfile.firstName || 'there'},
+
+Here's your weekly wellness progress update:
+
+📊 Weekly Summary:
+• Average Steps: ${Math.round(calculateAverage(getRecentData(7), 'steps'))} per day
+• Average Sleep: ${calculateAverage(getRecentData(7), 'sleepDuration').toFixed(1)} hours
+• Average Mood: ${calculateAverage(getRecentData(7), 'mood').toFixed(1)}/10
+
+🎯 Goal Progress:
+• Sleep Quality: ${Math.round((calculateAverage(getRecentData(7), 'sleepDuration') / 8) * 100)}% of target
+• Daily Steps: ${Math.round((calculateAverage(getRecentData(7), 'steps') / 10000) * 100)}% of target
+• Stress Reduction: ${Math.round(((10 - calculateAverage(getRecentData(7), 'stress')) / 5) * 100)}% of target
+
+📈 Trends:
+• Sleep Quality: Improving
+• Activity Level: Consistent
+• Mood: Positive trend
+
+Keep up the great work! Your wellness journey is progressing well.
+
+Best regards,
+Your Wellness Assistant`
+                },
+                'achievement': {
+                    subject: 'Congratulations! Achievement Unlocked 🏆',
+                    message: `Hi ${userProfile.firstName || 'there'},
+
+🎉 Congratulations! You've unlocked a new achievement!
+
+🏆 Achievement: 7-Day Streak
+📅 Earned: ${new Date().toLocaleDateString()}
+🎯 Description: Complete 7 days of wellness tracking
+
+This is a fantastic milestone in your wellness journey! Your consistency and dedication are paying off.
+
+Keep up the excellent work and continue building healthy habits!
+
+Best regards,
+Your Wellness Assistant`
+                },
+                'reminder': {
+                    subject: 'Wellness Reminder ⏰',
+                    message: `Hi ${userProfile.firstName || 'there'},
+
+Just a friendly reminder to track your wellness data today!
+
+📝 Quick Check-in:
+• How are you feeling today? (1-10)
+• How many steps have you taken?
+• How was your sleep last night?
+
+Taking a few minutes to track your wellness data helps us provide better personalized recommendations.
+
+Remember, every small step counts towards your wellness goals!
+
+Best regards,
+Your Wellness Assistant`
+                },
+                'weekly-summary': {
+                    subject: 'Your Weekly Wellness Summary',
+                    message: `Hi ${userProfile.firstName || 'there'},
+
+Here's your comprehensive weekly wellness summary:
+
+📊 Weekly Overview:
+• Total Data Points: ${userDataEntries.length}
+• Days Active: ${userDataEntries.length}
+• Success Rate: ${calculateSuccessRate()}%
+
+📈 Key Metrics:
+• Average Steps: ${Math.round(calculateAverage(getRecentData(7), 'steps'))} per day
+• Average Sleep: ${calculateAverage(getRecentData(7), 'sleepDuration').toFixed(1)} hours
+• Average Mood: ${calculateAverage(getRecentData(7), 'mood').toFixed(1)}/10
+• Average Stress: ${calculateAverage(getRecentData(7), 'stress').toFixed(1)}/10
+
+🎯 Goal Progress:
+• Sleep Quality: ${Math.round((calculateAverage(getRecentData(7), 'sleepDuration') / 8) * 100)}% of target
+• Daily Steps: ${Math.round((calculateAverage(getRecentData(7), 'steps') / 10000) * 100)}% of target
+• Stress Reduction: ${Math.round(((10 - calculateAverage(getRecentData(7), 'stress')) / 5) * 100)}% of target
+
+💡 Insights:
+• Your consistency is excellent
+• Sleep quality is improving
+• Activity levels are stable
+• Mood trends are positive
+
+Keep up the great work! Your wellness journey is on track.
+
+Best regards,
+Your Wellness Assistant`
+                },
+                'custom': {
+                    subject: 'Custom Wellness Message',
+                    message: `Hi ${userProfile.firstName || 'there'},
+
+This is a custom wellness message tailored just for you.
+
+Feel free to personalize this message with your own content and wellness insights.
+
+Best regards,
+Your Wellness Assistant`
+                }
+            };
+
+            if (templates[template]) {
+                document.getElementById('emailSubject').value = templates[template].subject;
+                document.getElementById('emailMessage').value = templates[template].message;
+            }
+        }
+
+        function selectTemplate(templateName) {
+            document.getElementById('emailTemplate').value = templateName;
+            loadEmailTemplate();
+            showEmailTab('compose');
+        }
+
+        function previewEmail() {
+            const to = document.getElementById('emailTo').value;
+            const subject = document.getElementById('emailSubject').value;
+            const message = document.getElementById('emailMessage').value;
+
+            if (!to || !subject || !message) {
+                alert('Please fill in all required fields before previewing.');
+                return;
+            }
+
+            const preview = `
+Email Preview:
+================
+To: ${to}
+Subject: ${subject}
+
+Message:
+${message}
+================
+            `;
+
+            alert(preview);
+        }
+
+        function sendEmail() {
+            const to = document.getElementById('emailTo').value;
+            const subject = document.getElementById('emailSubject').value;
+            const message = document.getElementById('emailMessage').value;
+            const schedule = document.getElementById('emailSchedule').value;
+            const scheduleTime = document.getElementById('emailScheduleTime').value;
+
+            if (!to || !subject || !message) {
+                alert('Please fill in all required fields before sending.');
+                return;
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(to)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Create email record
+            const emailRecord = {
+                id: Date.now(),
+                to: to,
+                subject: subject,
+                message: message,
+                status: schedule === 'now' ? 'sent' : 'scheduled',
+                sentAt: schedule === 'now' ? new Date().toISOString() : scheduleTime,
+                createdAt: new Date().toISOString()
+            };
+
+            // Add to email history
+            emailHistory.push(emailRecord);
+            localStorage.setItem('wellnessEmailHistory', JSON.stringify(emailHistory));
+
+            // Simulate email sending
+            if (schedule === 'now') {
+                simulateEmailSending(emailRecord);
+            } else {
+                alert('Email scheduled successfully!');
+            }
+
+            // Clear form
+            document.getElementById('emailTo').value = '';
+            document.getElementById('emailSubject').value = '';
+            document.getElementById('emailMessage').value = '';
+            document.getElementById('emailTemplate').value = '';
+        }
+
+        function simulateEmailSending(emailRecord) {
+            // Simulate SMTP connection and sending
+            const output = document.getElementById('demoOutput');
+            output.innerHTML = `
+                <h3>📧 Email Sent Successfully</h3>
+                <pre>📬 Email Delivery Status
+====================================
+📧 To: ${emailRecord.to}
+📝 Subject: ${emailRecord.subject}
+📅 Sent: ${new Date(emailRecord.sentAt).toLocaleString()}
+📊 Status: Delivered
+
+🔗 SMTP Details:
+  • Host: ${emailSettings.smtpHost}
+  • Port: ${emailSettings.smtpPort}
+  • Authentication: ${emailSettings.smtpUser ? 'Configured' : 'Not configured'}
+  • Security: TLS/SSL Enabled
+
+📈 Delivery Stats:
+  • Delivery Time: 2.3 seconds
+  • Server Response: 250 OK
+  • Message ID: ${emailRecord.id}@wellness.app
+
+✅ Email successfully delivered to recipient's inbox!
+
+Note: This is a simulation. In a real application, you would
+integrate with an actual SMTP service like SendGrid, Mailgun,
+or AWS SES for email delivery.</pre>
+            `;
+
+            alert('Email sent successfully!');
+        }
+
+        function updateEmailHistory() {
+            const emailList = document.getElementById('emailList');
+            
+            if (emailHistory.length === 0) {
+                emailList.innerHTML = '<p>No emails sent yet. Start by composing your first email!</p>';
+                return;
+            }
+
+            const recentEmails = emailHistory.slice(-10).reverse();
+            emailList.innerHTML = recentEmails.map(email => `
+                <div class="email-item">
+                    <div class="email-header-info">
+                        <span class="email-subject">${email.subject}</span>
+                        <span class="email-status ${email.status}">${email.status}</span>
+                    </div>
+                    <div class="email-details">
+                        <span class="email-to">${email.to}</span>
+                        <span class="email-date">${new Date(email.sentAt).toLocaleString()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function refreshEmailHistory() {
+            updateEmailHistory();
+        }
+
+        function loadEmailSettings() {
+            // Load saved email settings
+            const savedSettings = localStorage.getItem('wellnessEmailSettings');
+            if (savedSettings) {
+                emailSettings = JSON.parse(savedSettings);
+            }
+
+            // Update form fields
+            document.getElementById('smtpHost').value = emailSettings.smtpHost;
+            document.getElementById('smtpPort').value = emailSettings.smtpPort;
+            document.getElementById('smtpUser').value = emailSettings.smtpUser;
+            document.getElementById('smtpPass').value = emailSettings.smtpPass;
+            document.getElementById('notifyDaily').checked = emailSettings.dailyRecs;
+            document.getElementById('notifyProgress').checked = emailSettings.progress;
+            document.getElementById('notifyAchievements').checked = emailSettings.achievements;
+            document.getElementById('notifyReminders').checked = emailSettings.reminders;
+            document.getElementById('defaultSendTime').value = emailSettings.sendTime;
+        }
+
+        function saveEmailSettings() {
+            // Save SMTP settings
+            emailSettings.smtpHost = document.getElementById('smtpHost').value;
+            emailSettings.smtpPort = parseInt(document.getElementById('smtpPort').value);
+            emailSettings.smtpUser = document.getElementById('smtpUser').value;
+            emailSettings.smtpPass = document.getElementById('smtpPass').value;
+            emailSettings.dailyRecs = document.getElementById('notifyDaily').checked;
+            emailSettings.progress = document.getElementById('notifyProgress').checked;
+            emailSettings.achievements = document.getElementById('notifyAchievements').checked;
+            emailSettings.reminders = document.getElementById('notifyReminders').checked;
+            emailSettings.sendTime = document.getElementById('defaultSendTime').value;
+
+            // Save to localStorage
+            localStorage.setItem('wellnessEmailSettings', JSON.stringify(emailSettings));
+
+            alert('Email settings saved successfully!');
+        }
+
+        function testSMTPConnection() {
+            const host = document.getElementById('smtpHost').value;
+            const port = document.getElementById('smtpPort').value;
+            const user = document.getElementById('smtpUser').value;
+            const pass = document.getElementById('smtpPass').value;
+
+            if (!host || !port || !user || !pass) {
+                alert('Please fill in all SMTP configuration fields before testing.');
+                return;
+            }
+
+            // Simulate SMTP connection test
+            const output = document.getElementById('demoOutput');
+            output.innerHTML = `
+                <h3>🔗 SMTP Connection Test</h3>
+                <pre>📧 SMTP Configuration Test
+====================================
+🌐 Host: ${host}
+🔌 Port: ${port}
+👤 Username: ${user}
+🔐 Password: ${'*'.repeat(pass.length)}
+
+🔄 Testing Connection...
+✅ Connection established successfully
+✅ Authentication successful
+✅ TLS/SSL handshake completed
+✅ Ready to send emails
+
+📊 Connection Details:
+  • Protocol: SMTP
+  • Security: TLS 1.3
+  • Authentication: PLAIN
+  • Response Time: 245ms
+
+✅ SMTP connection test passed!
+
+Note: This is a simulation. In a real application, you would
+test the actual SMTP connection using a library like Nodemailer
+or similar email service integration.</pre>
+            `;
+
+            alert('SMTP connection test successful!');
+        }
+
+        function testEmailNotification() {
+            const emailAddress = document.getElementById('profileEmailAddress').value;
+            
+            if (!emailAddress) {
+                alert('Please enter your email address first.');
+                return;
+            }
+
+            // Send test email
+            const testEmail = {
+                id: Date.now(),
+                to: emailAddress,
+                subject: 'Test Email - Wellness App',
+                message: `Hi ${userProfile.firstName || 'there'},
+
+This is a test email from your Wellness App to verify that email notifications are working correctly.
+
+If you received this email, your email settings are configured properly!
+
+Best regards,
+Your Wellness Assistant`,
+                status: 'sent',
+                sentAt: new Date().toISOString(),
+                createdAt: new Date().toISOString()
+            };
+
+            emailHistory.push(testEmail);
+            localStorage.setItem('wellnessEmailHistory', JSON.stringify(emailHistory));
+
+            // Simulate sending
+            simulateEmailSending(testEmail);
+        }
+
+        function resetEmailSettings() {
+            if (confirm('Are you sure you want to reset all email settings to defaults?')) {
+                emailSettings = {
+                    smtpHost: 'smtp.gmail.com',
+                    smtpPort: 587,
+                    smtpUser: '',
+                    smtpPass: '',
+                    dailyRecs: true,
+                    progress: true,
+                    achievements: true,
+                    reminders: true,
+                    frequency: 'daily',
+                    sendTime: '08:00'
+                };
+
+                loadEmailSettings();
+                alert('Email settings reset to defaults.');
+            }
+        }
+
+        // Auto-send email notifications based on user preferences
+        function checkAndSendNotifications() {
+            if (!isOnboardingComplete) return;
+
+            const now = new Date();
+            const currentTime = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+            
+            // Check if it's time to send daily notifications
+            if (emailSettings.sendTime === currentTime && emailSettings.dailyRecs) {
+                sendDailyRecommendationEmail();
+            }
+        }
+
+        function sendDailyRecommendationEmail() {
+            if (!currentRecommendation) {
+                currentRecommendation = generateRuleBasedRecommendation();
+            }
+
+            const emailAddress = document.getElementById('profileEmailAddress').value;
+            if (!emailAddress) return;
+
+            const dailyEmail = {
+                id: Date.now(),
+                to: emailAddress,
+                subject: 'Your Daily Wellness Action',
+                message: `Hi ${userProfile.firstName || 'there'},
+
+Here's your personalized wellness recommendation for today:
+
+🎯 Today's Action: ${currentRecommendation.action}
+📝 Description: ${currentRecommendation.description}
+⏱️ Duration: ${currentRecommendation.duration}
+🕐 Best Time: ${currentRecommendation.bestTime}
+📈 Expected Impact: ${currentRecommendation.expectedImpact}
+
+💡 Why this recommendation?
+${currentRecommendation.reasoning}
+
+Have a wonderful day!
+
+Best regards,
+Your Wellness Assistant`,
+                status: 'sent',
+                sentAt: new Date().toISOString(),
+                createdAt: new Date().toISOString()
+            };
+
+            emailHistory.push(dailyEmail);
+            localStorage.setItem('wellnessEmailHistory', JSON.stringify(emailHistory));
         }
 
         function updateDeviceStatus() {
