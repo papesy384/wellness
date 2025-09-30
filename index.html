@@ -2741,6 +2741,7 @@
                         <button class="btn btn-secondary" onclick="showScreen('input')">Add Data</button>
                         <button class="btn btn-secondary" onclick="showScreen('recommendations')">Get Recommendation</button>
                         <button class="btn btn-secondary" onclick="showScreen('progress')">View Progress</button>
+                        <button class="btn btn-secondary" onclick="showEmailModal()">📧 Send Email</button>
                     </div>
                 </div>
             </div>
@@ -3381,7 +3382,61 @@
                     </div>
                     
                     <div class="profile-section">
-                        <h3>⚙️ Settings</h3>
+                        <h3>📧 Email Notifications</h3>
+                        <div class="email-settings">
+                            <div class="setting-item">
+                                <span class="setting-label">Email Address</span>
+                                <input type="email" id="profileEmailAddress" placeholder="your@email.com" value="user@example.com">
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-label">Daily Recommendations</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailDailyRecs" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-label">Progress Updates</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailProgress" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-label">Achievement Notifications</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailAchievements" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-label">Reminder Emails</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailReminders" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-label">Email Frequency</span>
+                                <select id="emailFrequency">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <span class="setting-label">Preferred Time</span>
+                                <input type="time" id="emailTime" value="08:00">
+                            </div>
+                            <div class="email-actions">
+                                <button class="btn btn-primary" onclick="saveEmailSettings()">Save Settings</button>
+                                <button class="btn btn-secondary" onclick="testEmailNotification()">Send Test Email</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h3>⚙️ General Settings</h3>
                         <div class="settings-list">
                             <div class="setting-item">
                                 <span class="setting-label">Communication Style</span>
@@ -3394,6 +3449,255 @@
                             <div class="setting-item">
                                 <span class="setting-label">Timezone</span>
                                 <span class="setting-value" id="profileTimezone">EST</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Notification Modal -->
+        <div class="modal" id="emailModal" style="display: none;">
+            <div class="modal-content">
+                <div class="email-notification-container">
+                    <div class="email-header">
+                        <h2>📧 Email Notification</h2>
+                        <p>Send personalized wellness notifications via email</p>
+                        <button class="close-btn" onclick="hideEmailModal()">&times;</button>
+                    </div>
+                    
+                    <div class="email-tabs">
+                        <button class="email-tab-btn active" onclick="showEmailTab('compose')">Compose</button>
+                        <button class="email-tab-btn" onclick="showEmailTab('templates')">Templates</button>
+                        <button class="email-tab-btn" onclick="showEmailTab('history')">History</button>
+                        <button class="email-tab-btn" onclick="showEmailTab('settings')">Settings</button>
+                    </div>
+                    
+                    <!-- Compose Tab -->
+                    <div class="email-tab active" id="composeTab">
+                        <div class="email-compose">
+                            <div class="email-form">
+                                <div class="form-group">
+                                    <label for="emailTo">To:</label>
+                                    <input type="email" id="emailTo" placeholder="recipient@example.com" value="user@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="emailSubject">Subject:</label>
+                                    <input type="text" id="emailSubject" placeholder="Your wellness recommendation">
+                                </div>
+                                <div class="form-group">
+                                    <label for="emailTemplate">Template:</label>
+                                    <select id="emailTemplate" onchange="loadEmailTemplate()">
+                                        <option value="">Select Template</option>
+                                        <option value="daily-recommendation">Daily Recommendation</option>
+                                        <option value="progress-update">Progress Update</option>
+                                        <option value="achievement">Achievement Notification</option>
+                                        <option value="reminder">Wellness Reminder</option>
+                                        <option value="weekly-summary">Weekly Summary</option>
+                                        <option value="custom">Custom Message</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="emailMessage">Message:</label>
+                                    <textarea id="emailMessage" rows="10" placeholder="Enter your message here..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="emailSchedule">Schedule:</label>
+                                    <select id="emailSchedule">
+                                        <option value="now">Send Now</option>
+                                        <option value="later">Schedule for Later</option>
+                                    </select>
+                                    <input type="datetime-local" id="emailScheduleTime" style="display: none;">
+                                </div>
+                                <div class="email-actions">
+                                    <button class="btn btn-secondary" onclick="previewEmail()">Preview</button>
+                                    <button class="btn btn-primary" onclick="sendEmail()">Send Email</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Templates Tab -->
+                    <div class="email-tab" id="templatesTab">
+                        <div class="email-templates">
+                            <h3>📝 Email Templates</h3>
+                            <div class="template-grid">
+                                <div class="template-card" onclick="selectTemplate('daily-recommendation')">
+                                    <h4>🎯 Daily Recommendation</h4>
+                                    <p>Personalized daily wellness recommendations</p>
+                                    <div class="template-preview">
+                                        <strong>Subject:</strong> Your Daily Wellness Action<br>
+                                        <strong>Content:</strong> Personalized recommendation with reasoning
+                                    </div>
+                                </div>
+                                <div class="template-card" onclick="selectTemplate('progress-update')">
+                                    <h4>📈 Progress Update</h4>
+                                    <p>Weekly progress summary and insights</p>
+                                    <div class="template-preview">
+                                        <strong>Subject:</strong> Your Wellness Progress Update<br>
+                                        <strong>Content:</strong> Progress charts and achievements
+                                    </div>
+                                </div>
+                                <div class="template-card" onclick="selectTemplate('achievement')">
+                                    <h4>🏆 Achievement</h4>
+                                    <p>Celebrate wellness milestones</p>
+                                    <div class="template-preview">
+                                        <strong>Subject:</strong> Congratulations! Achievement Unlocked<br>
+                                        <strong>Content:</strong> Achievement details and encouragement
+                                    </div>
+                                </div>
+                                <div class="template-card" onclick="selectTemplate('reminder')">
+                                    <h4>⏰ Reminder</h4>
+                                    <p>Gentle wellness reminders</p>
+                                    <div class="template-preview">
+                                        <strong>Subject:</strong> Wellness Reminder<br>
+                                        <strong>Content:</strong> Friendly reminder to track progress
+                                    </div>
+                                </div>
+                                <div class="template-card" onclick="selectTemplate('weekly-summary')">
+                                    <h4>📊 Weekly Summary</h4>
+                                    <p>Comprehensive weekly wellness report</p>
+                                    <div class="template-preview">
+                                        <strong>Subject:</strong> Your Weekly Wellness Summary<br>
+                                        <strong>Content:</strong> Complete weekly analysis
+                                    </div>
+                                </div>
+                                <div class="template-card" onclick="selectTemplate('custom')">
+                                    <h4>✏️ Custom</h4>
+                                    <p>Create your own message</p>
+                                    <div class="template-preview">
+                                        <strong>Subject:</strong> Custom Subject<br>
+                                        <strong>Content:</strong> Your personalized message
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- History Tab -->
+                    <div class="email-tab" id="historyTab">
+                        <div class="email-history">
+                            <h3>📬 Email History</h3>
+                            <div class="history-controls">
+                                <select id="emailHistoryFilter">
+                                    <option value="all">All Emails</option>
+                                    <option value="sent">Sent</option>
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="failed">Failed</option>
+                                </select>
+                                <button class="btn btn-small" onclick="refreshEmailHistory()">Refresh</button>
+                            </div>
+                            <div class="email-list" id="emailList">
+                                <div class="email-item">
+                                    <div class="email-header-info">
+                                        <span class="email-subject">Daily Recommendation - Morning Walk</span>
+                                        <span class="email-status sent">Sent</span>
+                                    </div>
+                                    <div class="email-details">
+                                        <span class="email-to">user@example.com</span>
+                                        <span class="email-date">Today, 08:00 AM</span>
+                                    </div>
+                                </div>
+                                <div class="email-item">
+                                    <div class="email-header-info">
+                                        <span class="email-subject">Weekly Progress Update</span>
+                                        <span class="email-status scheduled">Scheduled</span>
+                                    </div>
+                                    <div class="email-details">
+                                        <span class="email-to">user@example.com</span>
+                                        <span class="email-date">Tomorrow, 09:00 AM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Settings Tab -->
+                    <div class="email-tab" id="settingsTab">
+                        <div class="email-settings">
+                            <h3>⚙️ Email Settings</h3>
+                            <div class="settings-grid">
+                                <div class="setting-card">
+                                    <h4>📧 SMTP Configuration</h4>
+                                    <div class="form-group">
+                                        <label for="smtpHost">SMTP Host:</label>
+                                        <input type="text" id="smtpHost" placeholder="smtp.gmail.com" value="smtp.gmail.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="smtpPort">Port:</label>
+                                        <input type="number" id="smtpPort" placeholder="587" value="587">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="smtpUser">Username:</label>
+                                        <input type="email" id="smtpUser" placeholder="your@email.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="smtpPass">Password:</label>
+                                        <input type="password" id="smtpPass" placeholder="App Password">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="testSMTPConnection()">Test Connection</button>
+                                </div>
+                                
+                                <div class="setting-card">
+                                    <h4>🔔 Notification Preferences</h4>
+                                    <div class="preference-item">
+                                        <span>Send daily recommendations</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="notifyDaily" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="preference-item">
+                                        <span>Send progress updates</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="notifyProgress" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="preference-item">
+                                        <span>Send achievement notifications</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="notifyAchievements" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="preference-item">
+                                        <span>Send reminder emails</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="notifyReminders" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-card">
+                                    <h4>⏰ Scheduling</h4>
+                                    <div class="form-group">
+                                        <label for="defaultSendTime">Default Send Time:</label>
+                                        <input type="time" id="defaultSendTime" value="08:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="timezone">Timezone:</label>
+                                        <select id="timezone">
+                                            <option value="EST">Eastern Time (EST)</option>
+                                            <option value="PST">Pacific Time (PST)</option>
+                                            <option value="CST">Central Time (CST)</option>
+                                            <option value="MST">Mountain Time (MST)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="emailFrequency">Frequency:</label>
+                                        <select id="emailFrequency">
+                                            <option value="daily">Daily</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="settings-actions">
+                                <button class="btn btn-primary" onclick="saveEmailSettings()">Save All Settings</button>
+                                <button class="btn btn-secondary" onclick="resetEmailSettings()">Reset to Defaults</button>
                             </div>
                         </div>
                     </div>
